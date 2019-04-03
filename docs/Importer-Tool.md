@@ -1,15 +1,15 @@
-:warning:  ***Warning: this way of loading data is deprecated. See [Data loading](Data-Loading.md) for the recommended method.***
+:warning: **_Warning: this way of loading data is deprecated. See [Data loading](Data-Loading.md) for the recommended method._**
 
-* [Introduction](#introduction)
-* [Import Cancer Type](#import-cancer-type)
-* [Import Cancer Study](#import-cancer-study)
-* [Remove Cancer Study](#remove-cancer-study)
-* [Import Study Data](#import-study-data)
-* [Import Case Lists](#import-case-lists)
+-   [Introduction](#introduction)
+-   [Import Cancer Type](#import-cancer-type)
+-   [Import Cancer Study](#import-cancer-study)
+-   [Remove Cancer Study](#remove-cancer-study)
+-   [Import Study Data](#import-study-data)
+-   [Import Case Lists](#import-case-lists)
 
 # [Introduction](introduction)
 
-The page describes how to import data into the cBioPortal using Python scripts found in our [scripts](https://github.com/cBioPortal/cbioportal/tree/stable/core/src/main/scripts) directory.  The follow assumptions have been made:
+The page describes how to import data into the cBioPortal using Python scripts found in our [scripts](https://github.com/cBioPortal/cbioportal/tree/stable/core/src/main/scripts) directory. The follow assumptions have been made:
 
 1. The cBioPortal software has been correctly [built from source](Build-from-Source.md).
 2. The data to import is in the proper [File Format](File-Formats.md).
@@ -19,7 +19,7 @@ The page describes how to import data into the cBioPortal using Python scripts f
 
 The following command is used to import cancer type metadata into the cBioPortal database:
 
-```
+```bash
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command import-cancer-type --meta-filename /path-to-cancer-type-file/cancer_type.txt
 ```
 
@@ -29,7 +29,7 @@ The [cancer_type.txt](File-Formats.md#cancer-study) file should conform to the f
 
 The following command is used to import cancer study metadata into the cBioPortal database:
 
-```
+```bash
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command import-study --meta-filename /path-to-meta_study-file/meta_study.txt
 ```
 
@@ -39,7 +39,7 @@ The [meta_study.txt](File-Formats.md#cancer-study) file should conform to the fi
 
 The following command is used to remove a cancer study from the cBioPortal database:
 
-```
+```bash
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command remove-study --meta-filename /path-to-meta_study-file/meta_study.txt
 ```
 
@@ -47,9 +47,9 @@ The [meta_study.txt](File-Formats.md#cancer-study) file should conform to the fi
 
 # [Import Study Data](import-study-data)
 
-The following command is used to import all types of genomic and clinicla data described on our [File Formats](File-Formats.md) wiki page.  Below are examples of import copy number and mutation data:
+The following command is used to import all types of genomic and clinicla data described on our [File Formats](File-Formats.md) wiki page. Below are examples of import copy number and mutation data:
 
-```
+```bash
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command import-study-data --meta-filename /path-to-meta_CNA.txt/meta_CNA.txt --data-filename /path-to-data_CNA.txt/data_CNA.txt
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command import-study-data --meta-filename /path-to-meta_mutations_extended.txt/meta_mutations_extended.txt --data-filename /path-to-data_mutations_extended.txt/data_mutations_extended.txt
 ```
@@ -58,7 +58,7 @@ $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.pr
 
 The following command is used to import case lists into the cBioPortal database:
 
-```
+```bash
 $PORTAL_HOME/core/src/main/scripts/cbioportalImporter.py --jvm-args "-Dspring.profiles.active=dbcp -cp $PORTAL_HOME/core/target/core-1.0-SNAPSHOT.jar" --command import-case-list --meta-filename /path-to-case-list/case-list.txt
 ```
 

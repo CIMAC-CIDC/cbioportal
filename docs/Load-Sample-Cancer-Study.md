@@ -17,7 +17,7 @@ Configure your shell to keep the variable set to the right folder.
 On GNU/Linux and macOS this usually means appending a line
 like the following to `.bash_profile` in your home directory:
 
-```
+```bash
 export PORTAL_HOME=/Users/johndoe/cbioportal
 ```
 
@@ -25,7 +25,7 @@ export PORTAL_HOME=/Users/johndoe/cbioportal
 
 The sample gene panel has to be imported before gene panel study data can be added to the database.
 
-```
+```bash
 cd <your_cbioportal_dir>/core/src/main/scripts
 ./importGenePanel.pl --data ../../test/scripts/test_data/study_es_0/data_gene_panel_testpanel1.txt
 ./importGenePanel.pl --data ../../test/scripts/test_data/study_es_0/data_gene_panel_testpanel2.txt
@@ -39,15 +39,15 @@ More details to load your own gene panel and gene set data can be found here: [I
 
 First it's useful to validate the study `study_es_0`, to check if the data is formatted correctly.
 
-To do so, go to the importer folder: 
+To do so, go to the importer folder:
 
-```
+```bash
 cd <your_cbioportal_dir>/core/src/main/scripts/importer
 ```
 
 and then run the following command:
 
-```
+```bash
 ./validateData.py -s ../../../test/scripts/test_data/study_es_0/ -n
 ```
 
@@ -61,13 +61,13 @@ Validation of study succeeded with warnings.
 
 To import the sample study:
 
-```
+```bash
 cd <your_cbioportal_dir>/core/src/main/scripts/importer
 ```
 
 and then run the following command:
 
-```
+```bash
 ./metaImport.py -s ../../../test/scripts/test_data/study_es_0/ -n -o
 ```
 

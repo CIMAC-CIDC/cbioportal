@@ -8,7 +8,9 @@ A cBioPortal seed database for human can be found on [the datahub page](https://
 
 After download, the files can be unzipped by entering the following command:
 
-    gunzip *.sql.gz
+```bash
+gunzip *.sql.gz
+```
 
 ## Import the cBioPortal Seed Database
 
@@ -16,7 +18,7 @@ After download, the files can be unzipped by entering the following command:
 
 1. Import the database schema (/db-scripts/src/main/resources/cgds.sql):
 
-    ```
+    ```bash
     mysql --user=cbio_user --password=somepassword cbioportal < cgds.sql
     ```
 
@@ -24,7 +26,7 @@ After download, the files can be unzipped by entering the following command:
 
 2. Import the main part of the seed database:
 
-    ```
+    ```bash
     mysql --user=cbio_user --password=somepassword cbioportal < seed-cbioportal_RefGenome_vX.Y.Z.sql
     ```
 
@@ -32,9 +34,10 @@ After download, the files can be unzipped by entering the following command:
 
 3. (Human only) Import the Protein Data Bank (PDB) part of the seed database. This will enable the visualization of PDB structures in the mutation tab. Loading this file takes more time than loading the previous files, and is optional for users that do not require PDB structures.
 
-    ```
+    ```bash
     mysql --user=cbio_user --password=somepassword cbioportal < seed-cbioportal_hg19_vX.Y.Z_only-pdb.sql
     ```
+
     **Important:** Replace `seed-cbioportal_hg19_vX.Y.Z_only-pdb.sql` with the downloaded version of the PDB database, such as `seed-cbioportal_hg19_v2.3.1_only-pdb.sql`.
 
 **Important:** Please be aware of the version of the seed database. In the [README on datahub](https://github.com/cbioportal/datahub/blob/master/seedDB/README.md), we stated which version of cBioPortal is compatible with the current seed database.

@@ -4,7 +4,7 @@
 
 ## 1. Create a docker network
 
-Because MySQL and cBioPortal are running on separate containers, docker needs to know how to link them. Using Docker's legacy `--link` flag tends to be fragile since it will break if the MySQL container is restarted. 
+Because MySQL and cBioPortal are running on separate containers, docker needs to know how to link them. Using Docker's legacy `--link` flag tends to be fragile since it will break if the MySQL container is restarted.
 
 To get around this, we can use the newer `Docker networks` feature by typing the following command in a docker terminal:
 
@@ -15,7 +15,8 @@ docker network create ${DOCKER_NETWORK_NAME}
 ```
 
 Where:
-- **${DOCKER_NETWORK_NAME}** is the name of the network that cBioPortal and the cBioPortal DB are going to be accessible. _i.e If the network is called **"cbio-net"** the command should be:_
+
+-   **\${DOCKER_NETWORK_NAME}** is the name of the network that cBioPortal and the cBioPortal DB are going to be accessible. _i.e If the network is called **"cbio-net"** the command should be:_
 
 #### Example
 
@@ -24,16 +25,17 @@ docker network create "cbio-net"
 ```
 
 #### Useful Resources
-- [Docker container networking](https://docs.docker.com/engine/userguide/networking/).
-- [Docker network create](https://docs.docker.com/engine/reference/commandline/network_create/).
+
+-   [Docker container networking](https://docs.docker.com/engine/userguide/networking/).
+-   [Docker network create](https://docs.docker.com/engine/reference/commandline/network_create/).
 
 ## 2. Database Setup
 
 As of this writing, the cBioPortal software runs properly on MySQL version 5.0.x. The software can be found and downloaded from the [MySQL website](https://www.mysql.com).
 
-There are two options to set up the cBioPortal Database:    
-2.1 Run MySQL on the host.    
-2.2 Run MySQL as a Docker container.    
+There are two options to set up the cBioPortal Database:  
+2.1 Run MySQL on the host.  
+2.2 Run MySQL as a Docker container.
 
 ### 2.1 Run MySQL on the host
 
@@ -63,16 +65,17 @@ docker run -d --name ${CONTAINER_NAME} \
 mysql
 ```
 
-Where:    
-- **${CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
-- **${DOCKER_NETWORK-NAME}**: The name of your network _i.e **cbio-net**_.
-- **${PREFERRED_EXTERNAL_PORT}**: The port that the container internal port will be mapped to _i.e **8306**_.
-- **${MYSQL_ROOT_PASSWORD}**: The root password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
-- **${MYSQL_USER}: The username for the cbioportal MySQL user _i.e **cbio**_.
-- **${MYSQL_PASSWORD}**: The MySQL user password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
-- **${MYSQL_DATABASE}**: The Database to create _i.e **cbioportal**_.
-- **${PATH_TO_MYSQL_DATA}**: The MySQL path were all MySQL Data are stored.
-- **${PATH_TO_SEED_DATABASE}**: Path to the seed databases.
+Where:
+
+-   **\${CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
+-   **\${DOCKER_NETWORK-NAME}**: The name of your network _i.e **cbio-net**_.
+-   **\${PREFERRED_EXTERNAL_PORT}**: The port that the container internal port will be mapped to _i.e **8306**_.
+-   **\${MYSQL_ROOT_PASSWORD}**: The root password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
+-   **\${MYSQL_USER}: The username for the cbioportal MySQL user \_i.e **cbio\*\*\_.
+-   **\${MYSQL_PASSWORD}**: The MySQL user password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
+-   **\${MYSQL_DATABASE}**: The Database to create _i.e **cbioportal**_.
+-   **\${PATH_TO_MYSQL_DATA}**: The MySQL path were all MySQL Data are stored.
+-   **\${PATH_TO_SEED_DATABASE}**: Path to the seed databases.
 
 Running the above command will create a MySQL docker container and will automatically import all Seed Databases.
 
@@ -92,8 +95,9 @@ MySQL logs can easily be monitored by executing the following command on a termi
 docker logs "{CONTAINER_NAME}"
 ```
 
-Where:    
-- **{CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
+Where:
+
+-   **{CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
 
 Learn more on [docker logs](https://docs.docker.com/engine/reference/commandline/logs/).
 
@@ -107,17 +111,19 @@ To access the `mysql` shell on a docker container simply execute the following c
 docker exec -it "{CONTAINER_NAME}" mysql -p"{MYSQL_ROOT_PASSWORD}"
 ```
 
-Where:    
-- **{CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
-- **{MYSQL_ROOT_PASSWORD}**: The root password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
+Where:
+
+-   **{CONTAINER_NAME}**: The name of your container instance _i.e **cbio-DB**_.
+-   **{MYSQL_ROOT_PASSWORD}**: The root password for the MySQL installation. For password restrictions please read carefully this [link](http://dev.mysql.com/doc/refman/5.7/en/user-names.html).
 
 #### 2.2.4 Useful Resources
-[MySQL Docker Hub](https://hub.docker.com/_/mysql/)    
+
+[MySQL Docker Hub](https://hub.docker.com/_/mysql/)  
 [MySQL Docker Github](https://github.com/docker-library/docs/tree/master/mysql)
 
 ## 3. cBioPortal Setup
 
-### 3.1 Run the cBioPortal docker container 
+### 3.1 Run the cBioPortal docker container
 
 In a docker terminal type the following command:
 
@@ -138,19 +144,20 @@ docker run -d --name ${CONTAINER_NAME} \
     cbioportal/cbioportal:${TAG}
 ```
 
-Where:    
-- **${CONTAINER_NAME}**: The name of your container instance, _i.e **cbioportal**_.
-- **${DOCKER_NETWORK_NAME}**: The name of your network, _i.e **cbio-net**_.
-- **${PREFERRED_EXTERNAL_PORT}**: The port that the container internal port will be mapped to, _i.e **8306**_.
-- **${PATH_TO_portal.properties}**: The external path were portal.properties are stored.
-- **${PATH_TO_log4j.properties}**: The external path were log4j.properties are stored.
-- **${PATH_TO_settings.xml}**: The external path were settings.xml is stored.
-- **${PATH_TO_context.xml}**: The external path were context.xml is stored.
-- **${PATH_TO_CUSTOMIZATION}**: The external path were customization files are stored.
-- **${PATH_TO_CBIOPORTAL_LOGS}**: The external path where you want cBioPortal Logs to be stored.
-- **${PATH_TO_TOMCAT_LOGS}**: The external path where you want Tomcat Logs to be stored.
-- **${PATH_TO_STUDIES}**: The external path where cBioPortal studies are stored.
-- **${TAG}**: The cBioPortal Version that you would like to run, _i.e **latest**_.
+Where:
+
+-   **\${CONTAINER_NAME}**: The name of your container instance, _i.e **cbioportal**_.
+-   **\${DOCKER_NETWORK_NAME}**: The name of your network, _i.e **cbio-net**_.
+-   **\${PREFERRED_EXTERNAL_PORT}**: The port that the container internal port will be mapped to, _i.e **8306**_.
+-   **\${PATH_TO_portal.properties}**: The external path were portal.properties are stored.
+-   **\${PATH_TO_log4j.properties}**: The external path were log4j.properties are stored.
+-   **\${PATH_TO_settings.xml}**: The external path were settings.xml is stored.
+-   **\${PATH_TO_context.xml}**: The external path were context.xml is stored.
+-   **\${PATH_TO_CUSTOMIZATION}**: The external path were customization files are stored.
+-   **\${PATH_TO_CBIOPORTAL_LOGS}**: The external path where you want cBioPortal Logs to be stored.
+-   **\${PATH_TO_TOMCAT_LOGS}**: The external path where you want Tomcat Logs to be stored.
+-   **\${PATH_TO_STUDIES}**: The external path where cBioPortal studies are stored.
+-   **\${TAG}**: The cBioPortal Version that you would like to run, _i.e **latest**_.
 
 ### 3.2 Run DB Migrations
 
@@ -165,5 +172,6 @@ docker exec -it ${CONTAINER_NAME} \
 migrate_db.py -p /cbioportal/src/main/resources/portal.properties -s /cbioportal/db-scripts/src/main/resources/migration.sql
 ```
 
-Where:    
-- **${CONTAINER_NAME}**: The name of your network, _i.e **cbioportal**_.
+Where:
+
+-   **\${CONTAINER_NAME}**: The name of your network, _i.e **cbioportal**_.

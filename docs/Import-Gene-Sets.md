@@ -6,30 +6,27 @@ Before loading a study with gene set data, gene set definitions have to be added
 
 ## Table of contents
 
-- [Quick example](#quick-example)
-- [Requirements for gene sets in cBioPortal](#requirements-for-gene-sets-in-cbioportal)
-- [Import Gene Sets](#import-gene-sets)
-	- [File formats](#file-formats)
-	- [Run the gene set importer](#run-the-gene-set-importer)
-- [Import Gene Set hierarchy](#import-gene-set-hierarchy)
-	- [File format](#file-format)
-	- [Running the gene set hierarchy importer](#running-the-gene-set-hierarchy-importer)
-- [Import a study with gene set data](#import-a-study-with-gene-set-data)
-- [References](#references)
+-   [Quick example](#quick-example)
+-   [Requirements for gene sets in cBioPortal](#requirements-for-gene-sets-in-cbioportal)
+-   [Import Gene Sets](#import-gene-sets) - [File formats](#file-formats) - [Run the gene set importer](#run-the-gene-set-importer)
+-   [Import Gene Set hierarchy](#import-gene-set-hierarchy) - [File format](#file-format) - [Running the gene set hierarchy importer](#running-the-gene-set-hierarchy-importer)
+-   [Import a study with gene set data](#import-a-study-with-gene-set-data)
+-   [References](#references)
 
 ## Quick example
+
 This example shows how the process of importing gene set data using test data.
 
 1. Navigate to scripts folder:
 
-```
+```bash
 cd <cbioportal_source_folder>/core/src/main/scripts
 ```
 
 2. Import gene sets and supplementary data:
-Note: This removes existing gene set, gene set hierarchy and gene set genetic profile data.
+   Note: This removes existing gene set, gene set hierarchy and gene set genetic profile data.
 
-```
+```bash
 ./importGenesetData.pl \
 	--data ../../test/resources/genesets/study_es_0_genesets.gmt \
 	--new-version msigdb_6.1 \
@@ -38,7 +35,7 @@ Note: This removes existing gene set, gene set hierarchy and gene set genetic pr
 
 3. Import gene set hierarchy data:
 
-```
+```bash
 ./importGenesetHierarchy.pl \
 	--data ../../test/resources/genesets/study_es_0_tree.yaml
 ```
@@ -47,7 +44,7 @@ Note: This removes existing gene set, gene set hierarchy and gene set genetic pr
 
 5. Import study (replace argument after `-u` with local cBioPortal and `-html` with preferred location for html report):
 
-```
+```bash
 ./importer/metaImport.py \
 	-s ../../test/scripts/test_data/study_es_0 \
 	-u http://cbioportal:8080/cbioportal \
@@ -57,6 +54,7 @@ Note: This removes existing gene set, gene set hierarchy and gene set genetic pr
 ```
 
 ## Requirements for gene sets in cBioPortal
+
 Gene set functionality was added in cBioPortal 1.7.0. Please use this or a later version. In addition, the database has to be updated to version 2.3.0 or higher, depending on the cBioPortal version. This can be done by running the python wrapper `migrate_db.py` for `migration.sql`.
 
 Updating the database is described [here](https://github.com/cBioPortal/cbioportal/blob/master/docs/Updating-your-cBioPortal-installation.md#running-the-migration-script).
@@ -64,6 +62,7 @@ Updating the database is described [here](https://github.com/cBioPortal/cbioport
 ## Import Gene Sets
 
 ### File formats
+
 Once you have initialized MySQL with cBioPortal database, it is possible to import gene sets. The format of the gene set data file is [the Gene Matrix Transposed file format (.gmt)](http://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29). This format is also used by the [MSigDB](#references), which hosts several collections of gene sets on: [http://software.broadinstitute.org/gsea/msigdb/](http://software.broadinstitute.org/gsea/msigdb/)
 
 Sample of .gmt file:
@@ -86,10 +85,12 @@ GLI1_UP.V1_UP<TAB>GLI1 upregulated v1 up genes<TAB>Genes up-regulated in RK3E ce
 E2F1_UP.V1_DN<TAB>E2F1 upregulated v1 down genes<TAB>Identification of E2F1-regulated genes that modulate the transition from quiescence into DNA synthesis, or have roles in apoptosis, signal transduction, membrane biology, and transcription repression.
 
 ```
+
 ### Run the gene set importer
+
 The importer for gene sets can be run with a perl wrapper, which is located at the following location and requires the following arguments:
 
-```
+```bash
 cd <cbioportal_source_folder>/core/src/main/scripts
 perl importGenesetData.pl
 
@@ -97,6 +98,7 @@ required:     --data <data_file.gmt>
               --new-version <Version> OR --update-info
 optional:     --supp <supp_file.txt>
 ```
+
 The `--new-version` argument with a `<Version>` parameter is used for loading new gene set definitions. It is not possible to add new gene sets or change the genes of current gene sets, without removing the old gene sets first. This is to prevent the user from having gene sets from different definitions and data from older definitions. The user can choose the name or number of the `<Version>` as he likes, e.g. `msigdb_6.1` or `Oncogenic_2017`. Running the script with `--new-version` **removes all previous gene sets, gene set hierarchy and gene set genetic profiles.** A prompt is given to make sure the user wants to do this. Note that it is possible enter the same version as the previous version, but previous data is removed nevertheless.
 
 The `--update info` can be used only to update only the long name, description and reference URL.
@@ -106,6 +108,7 @@ The `--update info` can be used only to update only the long name, description a
 After importing gene sets, you can import a gene set hierarchy that is used on the query page to select gene sets.
 
 ### File format
+
 For gene set hierarchy files, we use the YAML format. This is common format to structure hierarchical data.
 
 Sample of format (note this is mock data):
@@ -132,7 +135,8 @@ Cancer Gene sets from Broad:
 To make your own hierarchy, make sure every branchname ends with `:`. Every branch can contain new branches (which can be considered subcategories) or gene sets (which are designated by the `Gene sets:` statement). The gene set names are the `stable ids` imported by `ImportGenesetData.java` and should start with `-`.
 
 ### Running the gene set hierarchy importer
-```
+
+```bash
 cd <cbioportal_source_folder>/core/src/main/scripts
 perl importGenesetHierarchy.pl
 
@@ -145,12 +149,13 @@ Gene set data can be added to a study folder and subsequently import the whole s
 A description of GSVA study data can be found in the [cBioPortal File Formats documentation](File-Formats.md#gene-set-data).
 
 ## References
+
 **GSVA: gene set variation analysis for microarray and RNA-Seq data**<br>
-Sonja Hänzelmann, Robert Castelo and Justin Guinney, *BMC Bioinformatics, 2013*<br>
+Sonja Hänzelmann, Robert Castelo and Justin Guinney, _BMC Bioinformatics, 2013_<br>
 http://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-7 <br>
 http://www.bioconductor.org/packages/release/bioc/html/GSVA.html
 
 **Gene set enrichment analysis: A knowledge-based approach for interpreting genome-wide expression profiles**<br>
-Aravind Subramanian, Pablo Tamayo, Vamsi K. Mootha, Sayan Mukherjee, Benjamin L. Ebert, Michael A. Gillette, Amanda Paulovich, Scott L. Pomeroy, Todd R. Golub, Eric S. Lander, and Jill P. Mesirov, *PNAS, 2005*<br>
+Aravind Subramanian, Pablo Tamayo, Vamsi K. Mootha, Sayan Mukherjee, Benjamin L. Ebert, Michael A. Gillette, Amanda Paulovich, Scott L. Pomeroy, Todd R. Golub, Eric S. Lander, and Jill P. Mesirov, _PNAS, 2005_<br>
 http://www.pnas.org/content/102/43/15545 <br>
 http://software.broadinstitute.org/gsea/msigdb

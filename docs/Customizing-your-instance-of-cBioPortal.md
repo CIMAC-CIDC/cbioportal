@@ -1,6 +1,6 @@
 # Customizing your instance of cBioPortal
 
-cBioPortal contains a number of properties that allow you to customize your cBioPortal instance. 
+cBioPortal contains a number of properties that allow you to customize your cBioPortal instance.
 
 This page focuses on the skin properties, which allow you to
 customize the web page cosmetics, such as custom images,
@@ -15,7 +15,7 @@ Below you can find the complete list of all the available skin properties.
 
 # cBioSkins Properties
 
-**Please note!**  If you are reading this on the GitHub web site, you may need to scroll right to see all the columns in the table below.
+**Please note!** If you are reading this on the GitHub web site, you may need to scroll right to see all the columns in the table below.
 
 <table>
    <tbody>
@@ -231,28 +231,32 @@ Creating you own local news/about or FAQ page involves three steps. For example,
 You may need to modify additional settings depending on whether you're e.g. using markdown pages. Please refer to the [cBioPortal Documentation](#cbioportal-documentation-settings) for more information.
 
 # cBioPortal Documentation Settings
-cBioPortal supports internal as well as external pages and supports html and markdown pages. 
+
+cBioPortal supports internal as well as external pages and supports html and markdown pages.
 
 ## Using External Pages
+
 cBioPortal can retrieve external pages and use them as news/faq/about page. For example, if your news page is stored on github wiki and reachable via https://github.com/cBioPortal/cbioportal/wiki/News.md use
 
-```
+```properties
 skin.documentation.baseurl=https://github.com/cBioPortal/cbioportal/wiki/
 skin.documentation.news=News.md
 ```
 
 ## Using Internal Pages
-cBioPortal can use pages stored in (a subdirectory of) your content directory as news/faq/about page. For example, if your news page is called myNews.md and stored in content/myFolder, use 
 
-```
+cBioPortal can use pages stored in (a subdirectory of) your content directory as news/faq/about page. For example, if your news page is called myNews.md and stored in content/myFolder, use
+
+```properties
 skin.documentation.baseurl=/
 skin.documentation.news=myFolder/myNews.md
 ```
 
 ## Markdown
+
 By default, cBioPortal assumes all documentation is in markdown. If your documentation is not in markdown, please use
 
-```
+```properties
 skin.documentation.markdown=false
 ```
 
@@ -260,6 +264,7 @@ If your documentation contains a relative link, cBioPortal will assume it uses t
 Please be aware that the links may be case-sensitive! E.g. https://github.com/cBioPortal/cbioportal/wiki/News.md is not the same as https://github.com/cBioPortal/cbioportal/wiki/news.md
 
 # Custom styling of the patient view's clinical data
+
 The [Patient View](http://www.cbioportal.org/patient?studyId=lgg_ucsf_2014&caseId=P04) shows several [clinical attributes](File-Formats.md#clinical-data) at the top of the page, e.g. `AGE`, `SEX`:
 ![test](../test/end-to-end/screenshots/firefox/patient_view_lgg_ucsf_2014_case_id_P04.png)
 The order, styling and visibility of those [attributes](File-Formats.md#clinical-data) at the top can be changed by editing the [patient view's clinical attributes CSS file](../portal/src/main/webapp/css/patient-view/clinical-attributes.css).

@@ -15,9 +15,9 @@ The latest cBioPortal seed file and database schema are available from [cBioPort
 
 You will need the following configuration files.
 
-- [portal.properties Reference](Pre-Build-Steps.md#prepare-property-files).
-- [Download portal.properties.EXAMPLE](../src/main/resources/portal.properties.EXAMPLE)
-- [log4j.properties  Reference](Pre-Build-Steps.md#prepare-the-log4jproperties-file).
-- [Download log4j.properties.EXAMPLE](../src/main/resources/log4j.properties.EXAMPLE)
-- [settings.xml Reference](Pre-Build-Steps.md#create-a-maven-settings-file)
-- [context.xml Reference](Deploying.md#set-up-the-database-connection-pool)
+-   [portal.properties Reference](Pre-Build-Steps.md#prepare-property-files).
+-   [Download portal.properties.EXAMPLE](../src/main/resources/portal.properties.EXAMPLE)
+-   [log4j.properties Reference](Pre-Build-Steps.md#prepare-the-log4jproperties-file).
+-   [Download log4j.properties.EXAMPLE](../src/main/resources/log4j.properties.EXAMPLE)
+-   [settings.xml Reference](Pre-Build-Steps.md#create-a-maven-settings-file)
+-   [context.xml Reference](Deploying.md#set-up-the-database-connection-pool)

@@ -6,14 +6,15 @@ While building, you must point the environment variable `PORTAL_HOME` to
 the root directory containing the portal source code.
 
 For example, run a command like the following if on macOS:
-```
+
+```bash
 export PORTAL_HOME=/Users/ecerami/dev/cbioportal
 ```
 
 To compile the cBioPortal source code, move into the source directory and
 run the following maven command:
 
-```
+```bash
 mvn -DskipTests clean install
 ```
 

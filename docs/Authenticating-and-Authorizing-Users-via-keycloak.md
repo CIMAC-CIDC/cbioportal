@@ -18,44 +18,48 @@ To skip to the authorization section see: [authorization with Keycloak](#authori
 Keycloak is an [open source identity and access management solution](https://keycloak.gitbooks.io/documentation/server_admin/topics/overview.html). It has a built-in RDBM system to store login information. It can help build a security layer on top of the cBioPortal web application.
 
 Keycloak boils down to three simple terms:
-* **realm**: A realm secures and manages security metadata for a set of users, application, and registered auth clients.
-* **client**: Clients are entities that can request authentication of a user within a realm.
-* **role**: Roles identify a type or category of user. Keycloak often assigns access and permissions to specific roles rather than individual users for a fine-grained access control. 
 
-Keycloak offers three types of roles: 
-* Realm-level roles are in global namespace shared by all clients. 
-* Client roles have basically a namespace dedicated to a client. 
-* A composite role is a role that has one or more additional roles associated with it. 
+-   **realm**: A realm secures and manages security metadata for a set of users, application, and registered auth clients.
+-   **client**: Clients are entities that can request authentication of a user within a realm.
+-   **role**: Roles identify a type or category of user. Keycloak often assigns access and permissions to specific roles rather than individual users for a fine-grained access control.
 
+Keycloak offers three types of roles:
+
+-   Realm-level roles are in global namespace shared by all clients.
+-   Client roles have basically a namespace dedicated to a client.
+-   A composite role is a role that has one or more additional roles associated with it.
 
 ### How does Keycloak SAML Authentication work?
 
 Keycloak supports both OpenID-Connect and SAML authentication. When you use SAML authentication, the Keycloak server exchanges XML documents with a web application. XML signatures and encryption are then used to verify requests from the application.
 
 ## Configure Keycloak to authenticate your cbioportal instance
+
 1. Log in to your Keycloak Identity Provider, e.g. <http://localhost:8080/auth>, as an admin user. :warning: when setting this up on something else than localhost (e.g. production), you will need to use/enable https on your Keycloak server. For simplicity, the rest of the documentation below continues on http://localhost.
 2. Hover over the top-left–corner drop down menu (titled ‘**Master**’) to create a new realm.
-![](images/previews/add-realm.png)
-Please note if you are logged in the master realm, this drop-down menu lists all the realms created. The last entry of this drop-down menu is always **Add Realm**. Click this to add a realm. Then type '_cbioportal_' in the name field and click the **Create** button.
+   ![](images/previews/add-realm.png)
+   Please note if you are logged in the master realm, this drop-down menu lists all the realms created. The last entry of this drop-down menu is always **Add Realm**. Click this to add a realm. Then type '_cbioportal_' in the name field and click the **Create** button.
 3. To create a SAML client, go to the **Clients** item in the left menu. On this page, click the **Create** button on the right. This will bring you to the **Add Client** page.
-    * Enter a **Client ID** for the client, e.g. '_cbioportal_', this will be the expected `issuer` value in SAML requests sent by the application.
-    * Select _saml_ in the **Client Protocol** drop down box.
-    * Enter `http://localhost:8081/cbioportal/saml` in the **Client SAML Endpoint** textbox, this is the URL that the Keycloak server will send SAML requests and responses to. Then click the **Save** button; this will take you to the client page below.
+    - Enter a **Client ID** for the client, e.g. '_cbioportal_', this will be the expected `issuer` value in SAML requests sent by the application.
+    - Select _saml_ in the **Client Protocol** drop down box.
+    - Enter `http://localhost:8081/cbioportal/saml` in the **Client SAML Endpoint** textbox, this is the URL that the Keycloak server will send SAML requests and responses to. Then click the **Save** button; this will take you to the client page below.
 
 ![](images/previews/edit-client.png)
 
 4. Choose _email_ as your **Name ID Format**.
-5. Next, enter a pattern for **Valid Redirect URIs** that Keycloak can use upon a successful authentication, e.g. `http://localhost:8081/cbioportal/*`. :information_source: notice that you can add multiple URLs in this field. You could use this in some cases to support 
-the URLs with and without port (e.g. if tomcat is running on port `80` and you want to allow both `http://localhost:80/cbioportal/*` and `http://localhost/cbioportal/*` as redirect URLs).
+5. Next, enter a pattern for **Valid Redirect URIs** that Keycloak can use upon a successful authentication, e.g. `http://localhost:8081/cbioportal/*`. :information_source: notice that you can add multiple URLs in this field. You could use this in some cases to support
+   the URLs with and without port (e.g. if tomcat is running on port `80` and you want to allow both `http://localhost:80/cbioportal/*` and `http://localhost/cbioportal/*` as redirect URLs).
 6. Set **Force POST Binding** and **Front Channel Logout** to _OFF_ and **Force Name ID Format** to _ON_.
 7. Expand the subsection **Fine Grain SAML Endpoint Configuration** and set **Logout Service POST Binding URL** to `http://localhost:8081/cbioportal/saml/logout`.
 8. Leave everything else as it is and click **Save**.
 
 ### Map SAML Assertion Attributes
+
 To specify attributes included in the SAML assertion, simply click on the **Mappers** tab, and add mappers using the **Add Builtin** and **Create** buttons.
 Make sure you add at least:
-- the built-in User Property mapper named _X500 email_ and
-- a _Role list_-type attribute using the word _roles_ as its **Role attribute name**.
+
+-   the built-in User Property mapper named _X500 email_ and
+-   a _Role list_-type attribute using the word _roles_ as its **Role attribute name**.
 
 ![](images/previews/add-mappers.png)
 
@@ -68,10 +72,11 @@ particular cBioPortal instance are listed in assertions sent to the
 instance, and not any other roles tracked in Keycloak.
 
 ### Export configuration for cBioPortal
+
 1. Next, navigate to the **Installation** tab for the same client.
 2. Select _SAML Metadata IDPSSODescriptor_ as the Format Option and click the **Download** button.
-4. Move the downloaded XML file to `portal/src/main/resources/`
-![](images/previews/download-IDPSSODescriptor-file.png)
+3. Move the downloaded XML file to `portal/src/main/resources/`
+   ![](images/previews/download-IDPSSODescriptor-file.png)
 
 ## Create a signing key for cBioPortal
 
@@ -79,7 +84,7 @@ Use the Java '`keytool`' command to generate keystore, as described
 [here](Authenticating-Users-via-SAML.md#creating-a-keystore)
 on the page about SAML in cBioPortal:
 
-```
+```bash
 keytool -genkey -alias secure-key -keyalg RSA -keystore samlKeystore.jks
 ```
 
@@ -99,7 +104,8 @@ should now see the certificate and no private key.
 ## Modifying configuration
 
 1. Within the portal.properties file , make sure that this line is present:
-```
+
+```properties
     app.name=cbioportal
 ```
 
@@ -130,7 +136,7 @@ should now see the certificate and no private key.
 3. Finally, make Tomcat pass the authentication method as a JVM argument
    by adding this line to `$CATALINA_HOME/bin/setenv.sh`:
 
-```sh
+```bash
 CATALINA_OPTS='-Dauthenticate=saml'
 ```
 
@@ -198,12 +204,12 @@ Sync** and **Periodic Changed Users Sync**.
 ### Create roles to authorize cBioPortal users
 
 The roles you assign to users will be used to tell cBioPortal which
-studies a user is allowed to see. 
+studies a user is allowed to see.
 
 To create a role, head to the **Roles** tab that is displayed along
 the top while configuring the `cbioportal` client – this tab is _not_
-the link of the same name in the left sidebar.  Click the **Add
-Role** button. Enter a name (e.g.  `brca_tcga_pub`) and description
+the link of the same name in the left sidebar. Click the **Add
+Role** button. Enter a name (e.g. `brca_tcga_pub`) and description
 for the role and hit the **Save** button.
 
 ![](images/previews/add-role-for-study.png)
@@ -218,7 +224,7 @@ configure a group to be "default" in Keycloak, meaning new users are
 automatically added to this group when logging in for the first time.
 
 Alternatively, the Keycloak roles can correspond to the **groups** specified
-in the [metadata files of studies](<File-Formats.md#cancer-study>) instead
+in the [metadata files of studies](File-Formats.md#cancer-study) instead
 of corresponding to individual **study identifiers**. Although this will
 result in less roles that need to be added and maintained in Keycloak,
 it does result in group configuration being spread over both Keycloak
@@ -245,28 +251,28 @@ the same as the one for assigning roles to individual users.
 
 You are now ready to go. Rebuild the WAR file and re-deploy:
 
-```
+```bash
 mvn -DskipTests clean install
 cp portal/target/cbioportal.war $CATALINA_HOME/webapps/
 ```
 
-Then, go to:  [http://localhost:8081/cbioportal/](http://localhost:8081/cbioportal/).
+Then, go to: [http://localhost:8081/cbioportal/](http://localhost:8081/cbioportal/).
 
 If all goes well, the following should happen:
 
-* You will be redirected to the Keycloak Login Page.
-* After authenticating, you will be redirected back to your local instance of cBioPortal.
+-   You will be redirected to the Keycloak Login Page.
+-   After authenticating, you will be redirected back to your local instance of cBioPortal.
 
-If this does not happen, see the Troubleshooting Tips  below.
+If this does not happen, see the Troubleshooting Tips below.
 
 ### Troubleshooting
 
 #### Logging
 
-Getting this to work requires many steps, and can be a bit tricky.  If you get stuck or get an obscure error message, your best bet is to turn on all DEBUG logging. 
- This can be done via `src/main/resources/log4j.properties`.  For example:
+Getting this to work requires many steps, and can be a bit tricky. If you get stuck or get an obscure error message, your best bet is to turn on all DEBUG logging.
+This can be done via `src/main/resources/log4j.properties`. For example:
 
-```
+```properties
 # Change INFO to DEBUG, if you want to see debugging info on underlying libraries we use.
 log4j.rootLogger=DEBUG, a
 
@@ -274,4 +280,5 @@ log4j.rootLogger=DEBUG, a
 log4j.category.org.mskcc=DEBUG
 log4j.logger.org.springframework.security=DEBUG
 ```
-Then, rebuild the WAR, redeploy, and try to authenticate again.  Your log file will then include hundreds of SAML-specific messages, even the full XML of each SAML message, and this should help you debug the error.
+
+Then, rebuild the WAR, redeploy, and try to authenticate again. Your log file will then include hundreds of SAML-specific messages, even the full XML of each SAML message, and this should help you debug the error.
