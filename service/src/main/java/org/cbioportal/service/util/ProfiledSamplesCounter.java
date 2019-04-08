@@ -1,6 +1,5 @@
 package org.cbioportal.service.util;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GeneFrequencyCalculator {
+public class ProfiledSamplesCounter {
 
     @Autowired
     private GenePanelService genePanelService;
@@ -48,21 +47,20 @@ public class GeneFrequencyCalculator {
 
         for (AlterationCountByGene alterationCountByGene : alterationCounts) {
 
-            int denominator = 0;
+            int numberOfSamplesProfiled = 0;
             Integer entrezGeneId = alterationCountByGene.getEntrezGeneId();
             List<GenePanelData> profiled = genePanelDataList.stream().filter(g -> g.getProfiled()).collect(Collectors.toList());
             if (geneGenePanelMap.containsKey(entrezGeneId)) {
                 List<GenePanel> matchingGenePanels = geneGenePanelMap.get(entrezGeneId);
                 for (GenePanel genePanel : matchingGenePanels) {
-                    denominator += genePanelDataMap.get(genePanel.getStableId()).size();
+                    numberOfSamplesProfiled += genePanelDataMap.get(genePanel.getStableId()).size();
                 }
                 
-                denominator += profiled.stream().filter(g -> g.getGenePanelId() == null).count();
+                numberOfSamplesProfiled += profiled.stream().filter(g -> g.getGenePanelId() == null).count();
             } else {
-                denominator = profiled.size();
+                numberOfSamplesProfiled = profiled.size();
             }
-            alterationCountByGene.setFrequency(new BigDecimal((double) alterationCountByGene.getNumberOfAlteredCases() /
-                denominator * 100).setScale(2, BigDecimal.ROUND_HALF_UP));
+            alterationCountByGene.setNumberOfSamplesProfiled(numberOfSamplesProfiled);
         }
     }
 }
