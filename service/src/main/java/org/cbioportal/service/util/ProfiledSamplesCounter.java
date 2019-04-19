@@ -20,19 +20,20 @@ public class ProfiledSamplesCounter {
     @Autowired
     private GenePanelService genePanelService;
 
-    public void calculate(List<String> molecularProfileIds, List<String> sampleIds, 
-        List<? extends AlterationCountByGene> alterationCounts) {
+    public void calculate(List<String> molecularProfileIds, List<String> sampleIds,
+            List<? extends AlterationCountByGene> alterationCounts) {
 
-        List<GenePanelData> genePanelDataList = genePanelService.fetchGenePanelDataInMultipleMolecularProfiles(molecularProfileIds, sampleIds);
-        Map<String, List<GenePanelData>> genePanelDataMap = genePanelDataList.stream().filter(g -> 
-            g.getGenePanelId() != null).collect(Collectors.groupingBy(GenePanelData::getGenePanelId));
+        List<GenePanelData> genePanelDataList = genePanelService
+                .fetchGenePanelDataInMultipleMolecularProfiles(molecularProfileIds, sampleIds);
+        Map<String, List<GenePanelData>> genePanelDataMap = genePanelDataList.stream()
+                .filter(g -> g.getGenePanelId() != null).collect(Collectors.groupingBy(GenePanelData::getGenePanelId));
         List<GenePanel> genePanels = new ArrayList<>();
         if (!genePanelDataMap.isEmpty()) {
             genePanels = genePanelService.fetchGenePanels(new ArrayList<>(genePanelDataMap.keySet()), "DETAILED");
         }
 
         Map<Integer, List<GenePanel>> geneGenePanelMap = new HashMap<>();
-        for (GenePanel genePanel: genePanels) {
+        for (GenePanel genePanel : genePanels) {
             for (GenePanelToGene genePanelToGene : genePanel.getGenes()) {
                 Integer entrezGeneId = genePanelToGene.getEntrezGeneId();
                 if (geneGenePanelMap.containsKey(entrezGeneId)) {
